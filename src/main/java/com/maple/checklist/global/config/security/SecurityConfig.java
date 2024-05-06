@@ -1,31 +1,46 @@
 package com.maple.checklist.global.config.security;
 
-import com.maple.checklist.global.config.security.auth.PrincipalDetailService;
+import com.maple.checklist.global.config.security.jwt.JwtAuthenticationFilter;
+import com.maple.checklist.global.config.security.jwt.JwtExceptionFilter;
+import com.maple.checklist.global.config.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
 
-    private final PrincipalDetailService principalDetailService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf((csrfConfig) -> csrfConfig.disable())
-            .authorizeHttpRequests(
-                authorizeRequests -> authorizeRequests
-                .requestMatchers("/", "/login/**").permitAll()      // 메인 페이지와 로그인 관련 페이지 허용
-
+            .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class)
+            .addFilterBefore(
+                new JwtAuthenticationFilter(jwtTokenProvider),
+                UsernamePasswordAuthenticationFilter.class
             )
-            .userDetailsService(principalDetailService)
-
+            .csrf(AbstractHttpConfigurer::disable)
+            .sessionManagement(
+                (sessionManagement) ->
+                    sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .formLogin(AbstractHttpConfigurer::disable)
+            .httpBasic(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(
+                authorize -> authorize
+                    .requestMatchers("/login", "/register", "/verify-email").permitAll()
+                    .requestMatchers("").hasAnyRole("MEMBER", "ADMIN")
+                    .anyRequest().permitAll()
+            )
         ;
 
         return http.build();
