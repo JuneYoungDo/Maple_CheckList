@@ -88,4 +88,13 @@ public class JwtTokenProvider {
             throw new BaseException(AuthErrorCode.EMPTY_JWT);
         }
     }
+
+    public boolean minimumValidateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(jwtSecretKey).parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
