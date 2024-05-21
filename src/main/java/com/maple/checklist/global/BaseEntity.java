@@ -1,6 +1,5 @@
 package com.maple.checklist.global;
 
-import com.fasterxml.jackson.databind.ser.Serializers.Base;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -25,10 +24,4 @@ public abstract class BaseEntity {
 
     @Column(name = "is_deleted")
     private boolean deleted;
-
-    BaseEntity() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-        deleted = false;
-    }
 }
