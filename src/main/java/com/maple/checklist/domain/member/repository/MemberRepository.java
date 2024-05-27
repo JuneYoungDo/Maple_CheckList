@@ -10,5 +10,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query(value = "select m from Member m where m.email = :email and m.deleted = false")
     Optional<Member> findMemberByEmailAndDeleted(String email);
 
+    @Query(value = "select m from Member m where m.memberId = :memberId and m.deleted = false")
+    Optional<Member> findMemberByMemberIdAndDeleted(Long memberId);
+
     Boolean existsByEmailAndDeleted(String email, boolean deleted);
 }

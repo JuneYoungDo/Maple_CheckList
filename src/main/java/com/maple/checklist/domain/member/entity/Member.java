@@ -35,4 +35,8 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
 }

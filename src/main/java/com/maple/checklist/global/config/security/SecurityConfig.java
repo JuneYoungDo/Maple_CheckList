@@ -1,5 +1,7 @@
 package com.maple.checklist.global.config.security;
 
+import com.maple.checklist.global.config.security.auth.CustomAccessDeniedHandler;
+import com.maple.checklist.global.config.security.auth.CustomAuthenticationEntryPoint;
 import com.maple.checklist.global.config.security.jwt.JwtAuthenticationFilter;
 import com.maple.checklist.global.config.security.jwt.JwtExceptionFilter;
 import com.maple.checklist.global.config.security.jwt.JwtTokenProvider;
@@ -19,15 +21,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private  final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class)
+
             .addFilterBefore(
                 new JwtAuthenticationFilter(jwtTokenProvider),
                 UsernamePasswordAuthenticationFilter.class
             )
+            .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class)
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(
                 (sessionManagement) ->
@@ -38,9 +43,12 @@ public class SecurityConfig {
             .authorizeHttpRequests(
                 authorize -> authorize
                     .requestMatchers("/login", "/register", "/verify-email").permitAll()
-                    .requestMatchers("").hasAnyRole("MEMBER", "ADMIN")
+                    .requestMatchers("/api/v1/member/**").hasAnyRole("MEMBER", "ADMIN")
                     .anyRequest().permitAll()
             )
+            .exceptionHandling(exceptionHandling -> exceptionHandling
+                .accessDeniedHandler(customAccessDeniedHandler)
+                .authenticationEntryPoint(customAuthenticationEntryPoint))
         ;
 
         return http.build();
