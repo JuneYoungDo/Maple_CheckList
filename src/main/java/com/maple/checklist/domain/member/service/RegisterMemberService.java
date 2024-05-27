@@ -73,6 +73,9 @@ public class RegisterMemberService implements RegisterMemberUseCase {
     public void withdrawMember(Member member, PasswordDto passwordDto) {
         if (bcryptUtilsService.isMatch(passwordDto.getPassword(), member.getPassword())) {
             member.setDeleted();
+            save(member);
+        } else {
+            throw new BaseException(AuthErrorCode.INCORRECT_PASSWORD);
         }
     }
 
@@ -81,6 +84,7 @@ public class RegisterMemberService implements RegisterMemberUseCase {
         if (bcryptUtilsService.isMatch(changePasswordDto.getPassword(), member.getPassword())) {
             member.changePassword(
                 bcryptUtilsService.encrypt(changePasswordDto.getChangePassword()));
+            save(member);
         } else {
             throw new BaseException(AuthErrorCode.INCORRECT_PASSWORD);
         }

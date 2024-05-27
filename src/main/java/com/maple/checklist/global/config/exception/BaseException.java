@@ -16,5 +16,6 @@ public class BaseException extends RuntimeException{
         message = code.getErrorMessage();
         status = code.getStatus();
         log.error("In BaseException ErrorCode: {}, ErrorMessage: {}, Status: {}", errorCode, message, status);
+        log.info("==================== END ======================");
     }
 }

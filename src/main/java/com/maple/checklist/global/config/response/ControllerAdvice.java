@@ -8,9 +8,12 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 @Log4j2
 @RestControllerAdvice
@@ -26,11 +29,43 @@ public class ControllerAdvice {
         ResponseEntity<ExceptionResponse> res = convert(GlobalErrorCode.NOT_VALID_ARGUMENT_ERROR,
             detailMessage);
 
-        log.info("[EXCEPTION]");
-        log.info("Response Status: {}", res.getStatusCode());
-        log.info("Response Message: {}", detailMessage);
+        log.error("[EXCEPTION]");
+        log.error("Response Status: {}", res.getStatusCode());
+        log.error("Response Message: {}", detailMessage);
         log.info("==================== END ======================");
 
+        return res;
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<ExceptionResponse> handleNoHandlerFoundException(
+        NoHandlerFoundException e) {
+        return convert(GlobalErrorCode.NOT_SUPPORTED_URI_ERROR);
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ExceptionResponse> handleMethodNotSupportedException(
+        HttpRequestMethodNotSupportedException e) {
+        return convert(GlobalErrorCode.NOT_SUPPORTED_METHOD_ERROR);
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<ExceptionResponse> handleMediaTypeNotSupportedException(
+        HttpMediaTypeNotSupportedException e) {
+        return convert(GlobalErrorCode.NOT_SUPPORTED_MEDIA_TYPE_ERROR);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ExceptionResponse> handleRuntimeException(RuntimeException e) {
+        return convert(GlobalErrorCode.SERVER_ERROR);
+    }
+
+    private ResponseEntity<ExceptionResponse> convert(ErrorCode e) {
+        ResponseEntity<ExceptionResponse> res = new ResponseEntity<>(new ExceptionResponse(e.getErrorCode(), e.getErrorMessage()), e.getStatus());
+        log.error("[EXCEPTION]");
+        log.error("Response Status: {}", res.getStatusCode());
+        log.error("Response Message: {}", e.getErrorMessage());
+        log.info("==================== END ======================");
         return res;
     }
 
