@@ -16,4 +16,10 @@ public class ExceptionResponse {
         this.message = e.getMessage();
         this.time = LocalDateTime.now();
     }
+
+    public ExceptionResponse(String code, String message) {
+        this.code = code;
+        this.message = message;
+        this.time = LocalDateTime.now();
+    }
 }

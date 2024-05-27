@@ -26,7 +26,6 @@ public class Interceptor implements HandlerInterceptor {
         log.info("IP: {}",logUtilsService.getClientIpAddress(request));
         log.info("Request URI: {} {}", request.getMethod(), request.getRequestURI());
         log.info("Member Id: {}",getMemberId(request.getHeader("Authorization")));
-        log.info("Request Body: {}",logUtilsService.readBody(request));
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 

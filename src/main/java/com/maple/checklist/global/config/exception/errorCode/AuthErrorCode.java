@@ -8,10 +8,11 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum AuthErrorCode implements ErrorCode {
-    INVALID_JWT("AUTH_001","유효하지 않은 Jwt 입니다.",HttpStatus.UNAUTHORIZED),
-    EMPTY_JWT("AUTH_002", "Jwt가 없습니다.", HttpStatus.UNAUTHORIZED),
-    EXPIRED_MEMBER_JWT("AUTH_003", "만료된 Jwt입니다.", HttpStatus.UNAUTHORIZED),
-    UNSUPPORTED_JWT("AUTH_004", "지원하지 않는 Jwt입니다.", HttpStatus.UNAUTHORIZED)
+    INVALID_JWT("AUTH_INVALID_JWT","Invalid JWT token.",HttpStatus.UNAUTHORIZED),
+    EMPTY_JWT("AUTH_EMPTY_JWT", "JWT token is empty.", HttpStatus.UNAUTHORIZED),
+    EXPIRED_MEMBER_JWT("AUTH_EXPIRED_JWT", "JWT token has expired.", HttpStatus.UNAUTHORIZED),
+    UNSUPPORTED_JWT("AUTH_UNSUPPORTED_JWT", "Unsupported JWT token.", HttpStatus.UNAUTHORIZED),
+    ALREADY_USED_EMAIL("EMAIL_DUPLICATION","The email address is already in use.",HttpStatus.CONFLICT),
     ;
 
     private final String errorCode;
