@@ -37,4 +37,9 @@ public class Monthly extends BaseEntity {
 
     @Column(name = "is_completed")
     private Boolean completed;
+
+    public Boolean updateCompleted() {
+        this.completed = !this.getCompleted();
+        return this.completed;
+    }
 }

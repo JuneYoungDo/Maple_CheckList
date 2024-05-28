@@ -11,4 +11,7 @@ public interface DailyRepository extends JpaRepository<Daily, Long> {
 
     @Query(value = "select d from Daily d where d.character = :character and d.deleted = false")
     Optional<List<Daily>> findAllByCharacterAndDeleted(Character character);
+
+    @Query(value = "select d from Daily d where d.dailyId = :dailyId and d.deleted = false")
+    Optional<Daily> findDailyByDailyIdAndDeleted(Long dailyId);
 }

@@ -11,4 +11,7 @@ public interface WeeklyRepository extends JpaRepository<Weekly, Long> {
 
     @Query(value = "select w from Weekly w where w.character = :character and w.deleted = false")
     Optional<List<Weekly>> findAllByCharacterAndDeleted(Character character);
+
+    @Query(value = "select w from Weekly w where w.weeklyId = :weeklyId and w.deleted = false")
+    Optional<Weekly> findWeeklyByWeeklyIdAndDeleted(Long weeklyId);
 }

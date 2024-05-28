@@ -7,12 +7,11 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum CharacterErrorCode implements ErrorCode {
-    INVALID_NICKNAME("INVALID_NICKNAME","The nickname is not exists",HttpStatus.BAD_REQUEST),
-    INVALID_CHARACTER_ID("INVALID_CHARACTER_ID","The character id is not exists", HttpStatus.BAD_REQUEST),
-    INVALID_CHARACTER("INVALID_CHARACTER","The character is not yours",HttpStatus.BAD_REQUEST),
+public enum ListErrorCode implements ErrorCode {
+    INVALID_LIST_ID("INVALID_LIST_ID","The list id is not exists", HttpStatus.BAD_REQUEST),
+    INVALID_LIST("INVALID_LIST","The list is not yours",HttpStatus.BAD_REQUEST),
+    INVALID_LIST_TYPE("INVALID_LIST_TYPE","The list type is not available",HttpStatus.BAD_REQUEST),
     ;
-
 
     private final String errorCode;
     private final String errorMessage;

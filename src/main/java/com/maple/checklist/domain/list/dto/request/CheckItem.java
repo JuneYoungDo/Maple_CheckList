@@ -1,4 +1,4 @@
-package com.maple.checklist.domain.list.dto;
+package com.maple.checklist.domain.list.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

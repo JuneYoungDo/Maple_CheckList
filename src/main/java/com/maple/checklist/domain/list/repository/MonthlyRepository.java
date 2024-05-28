@@ -11,4 +11,7 @@ public interface MonthlyRepository extends JpaRepository<Monthly, Long> {
 
     @Query(value = "select m from Monthly m where m.character = :character and m.deleted = false")
     Optional<List<Monthly>> findAllByCharacterAndDeleted(Character character);
+
+    @Query(value = "select m from Monthly m where m.monthlyId = :monthlyId and m.deleted = false")
+    Optional<Monthly> findMonthlyByMonthlyIdAndDeleted(Long monthlyId);
 }
