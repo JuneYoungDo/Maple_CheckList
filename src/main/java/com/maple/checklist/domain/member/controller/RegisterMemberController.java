@@ -1,19 +1,13 @@
 package com.maple.checklist.domain.member.controller;
 
-import com.maple.checklist.domain.member.dto.request.ChangePasswordDto;
 import com.maple.checklist.domain.member.dto.request.EmailDto;
 import com.maple.checklist.domain.member.dto.request.LoginDto;
 import com.maple.checklist.domain.member.dto.request.MemberBaseDto;
-import com.maple.checklist.domain.member.dto.request.PasswordDto;
-import com.maple.checklist.domain.member.entity.Member;
 import com.maple.checklist.domain.member.usecase.RegisterMemberUseCase;
-import com.maple.checklist.global.config.security.auth.CurrentMember;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
-public class MemberController {
+public class RegisterMemberController {
 
     private final RegisterMemberUseCase registerMemberUseCase;
 
     @PostMapping("/login")
     public ResponseEntity login(@Valid @RequestBody LoginDto loginDto) {
-        return new ResponseEntity(registerMemberUseCase.login(loginDto),HttpStatus.OK);
+        return new ResponseEntity(registerMemberUseCase.login(loginDto), HttpStatus.OK);
     }
 
     @PostMapping("/register")
@@ -37,18 +31,6 @@ public class MemberController {
         return new ResponseEntity(200, HttpStatus.OK);
     }
 
-    @PostMapping("/reset-pwd")
-    public ResponseEntity resetPwd(@Valid @RequestBody EmailDto emailDto) {
-
-        return null;
-    }
-
-    @PatchMapping("/member/change-pwd")
-    public ResponseEntity changePwd(@CurrentMember Member member,
-        @Valid @RequestBody ChangePasswordDto changePasswordDto) {
-        registerMemberUseCase.changePassword(member, changePasswordDto);
-        return new ResponseEntity(200, HttpStatus.OK);
-    }
 
     @PostMapping("/send-email")
     public ResponseEntity sendEmail(@Valid @RequestBody EmailDto emailDto) {
@@ -60,12 +42,5 @@ public class MemberController {
     public ResponseEntity verifyEmail() {
 
         return null;
-    }
-
-    @DeleteMapping("/member/withdraw")
-    public ResponseEntity deleteMember(@CurrentMember Member member,
-        @Valid @RequestBody PasswordDto passwordDto) {
-        registerMemberUseCase.withdrawMember(member, passwordDto);
-        return new ResponseEntity(200, HttpStatus.OK);
     }
 }

@@ -1,9 +1,7 @@
 package com.maple.checklist.domain.member.service;
 
-import com.maple.checklist.domain.member.dto.request.ChangePasswordDto;
 import com.maple.checklist.domain.member.dto.request.LoginDto;
 import com.maple.checklist.domain.member.dto.request.MemberBaseDto;
-import com.maple.checklist.domain.member.dto.request.PasswordDto;
 import com.maple.checklist.domain.member.dto.request.ValidateEmailDto;
 import com.maple.checklist.domain.member.dto.response.LoginResponseDto;
 import com.maple.checklist.domain.member.entity.Member;
@@ -67,27 +65,6 @@ public class RegisterMemberService implements RegisterMemberUseCase {
     public void registerMember(MemberBaseDto memberBaseDto) {
         // 레디스에 등록되어있는 이메일인지 확인 과정 필요
         register(memberBaseDto);
-    }
-
-    @Override
-    public void withdrawMember(Member member, PasswordDto passwordDto) {
-        if (bcryptUtilsService.isMatch(passwordDto.getPassword(), member.getPassword())) {
-            member.setDeleted();
-            save(member);
-        } else {
-            throw new BaseException(AuthErrorCode.INCORRECT_PASSWORD);
-        }
-    }
-
-    @Override
-    public void changePassword(Member member, ChangePasswordDto changePasswordDto) {
-        if (bcryptUtilsService.isMatch(changePasswordDto.getPassword(), member.getPassword())) {
-            member.changePassword(
-                bcryptUtilsService.encrypt(changePasswordDto.getChangePassword()));
-            save(member);
-        } else {
-            throw new BaseException(AuthErrorCode.INCORRECT_PASSWORD);
-        }
     }
 
     private void checkAlreadyUsed(String email) {
