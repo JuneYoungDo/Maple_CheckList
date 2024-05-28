@@ -2,7 +2,7 @@ package com.maple.checklist.global.utils;
 
 import com.maple.checklist.domain.character.dto.request.CharacterDto;
 import com.maple.checklist.global.config.exception.BaseException;
-import com.maple.checklist.global.config.exception.errorCode.NexonErrorCode;
+import com.maple.checklist.global.config.exception.errorCode.CharacterErrorCode;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -35,7 +35,7 @@ public class MapleService {
 
         HttpResponse<String> response = useApi(url,"GET");
         if(response.statusCode() == 400){
-            throw new BaseException(NexonErrorCode.INVALID_NICKNAME);
+            throw new BaseException(CharacterErrorCode.INVALID_NICKNAME);
         }
         JSONObject jsonObject = parseBody(response);
 
@@ -49,7 +49,7 @@ public class MapleService {
 
         HttpResponse<String> response = useApi(url,"GET");
         if(response.statusCode() == 400){
-            throw new BaseException(NexonErrorCode.INVALID_NICKNAME);
+            throw new BaseException(CharacterErrorCode.INVALID_NICKNAME);
         }
         JSONObject jsonObject = parseBody(response);
 
@@ -68,7 +68,7 @@ public class MapleService {
             .header("x-nxopen-api-key", API_KEY)
             .method(method, HttpRequest.BodyPublishers.noBody())
             .build();
-        
+
         return HttpClient.newHttpClient()
             .send(request, HttpResponse.BodyHandlers.ofString());
     }

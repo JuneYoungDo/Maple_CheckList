@@ -1,8 +1,12 @@
 package com.maple.checklist.domain.character.entity;
 
 import com.maple.checklist.domain.character.job.Job;
+import com.maple.checklist.domain.list.entity.Daily;
+import com.maple.checklist.domain.list.entity.Monthly;
+import com.maple.checklist.domain.list.entity.Weekly;
 import com.maple.checklist.domain.member.entity.Member;
 import com.maple.checklist.global.BaseEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,7 +15,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,4 +51,11 @@ public class Character extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_id")
     private Job job;
+
+    @OneToMany(mappedBy = "character", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<Daily> dailies;
+    @OneToMany(mappedBy = "character", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<Weekly> weeklies;
+    @OneToMany(mappedBy = "character", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<Monthly> monthlies;
 }
