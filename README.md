@@ -25,6 +25,8 @@
 #### Auth
 - Member의 Role을 활용해 접근 URL 제한
 - Jwt와 Spring Security 사용
+- 이메일 인증 사용(Redis)
+- 로그아웃 시 해당 토큰 사용불가(Redis)
 
 #### List 테이블
 - 대량의 데이터 처리를 대비하여 DAILY, WEEKLY, MONTHLY 테이블로 나눔

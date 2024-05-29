@@ -15,6 +15,8 @@ public enum AuthErrorCode implements ErrorCode {
     ALREADY_USED_EMAIL("EMAIL_DUPLICATION","The email address is already in use.",HttpStatus.CONFLICT),
     INCORRECT_PASSWORD("INCORRECT_PASSWORD","The current password provided is incorrect",HttpStatus.UNAUTHORIZED),
     INCORRECT_EMAIL("INCORRECT_EMAIL","The email address is not exists",HttpStatus.BAD_REQUEST),
+    INCORRECT_CODE("INCORRECT_CODE","The email code is invalid or expired.",HttpStatus.BAD_REQUEST),
+    INVALID_EMAIL("INVALID_EMAIL","Invalid or expired email.",HttpStatus.BAD_REQUEST)
     ;
 
     private final String errorCode;

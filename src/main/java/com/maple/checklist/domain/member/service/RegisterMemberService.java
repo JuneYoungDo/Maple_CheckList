@@ -13,6 +13,7 @@ import com.maple.checklist.global.config.exception.errorCode.AuthErrorCode;
 import com.maple.checklist.global.config.security.jwt.JwtTokenProvider;
 import com.maple.checklist.global.utils.BcryptUtilsService;
 import com.maple.checklist.global.utils.MailUtilsService;
+import com.maple.checklist.global.utils.RedisService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class RegisterMemberService implements RegisterMemberUseCase {
     private final BcryptUtilsService bcryptUtilsService;
     private final MailUtilsService mailUtilsService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RedisService redisService;
 
     private void save(Member member) {
         memberRepository.save(member);
@@ -53,18 +55,31 @@ public class RegisterMemberService implements RegisterMemberUseCase {
     @Override
     public void sendValidateEmail(String email) {
         checkAlreadyUsed(email);
-        mailUtilsService.sendAuthMail(email);
+        String code = mailUtilsService.sendAuthMail(email);
+        redisService.saveEmailVerificationToken(email,code,10);
     }
 
     @Override
     public void validateEmail(ValidateEmailDto validateEmailDto) {
-
+        String code = redisService.getEmailVerificationToken(validateEmailDto.getEmail());
+        if(code != null && code.equals(validateEmailDto.getCode())) {
+            redisService.deleteEmailVerificationToken(validateEmailDto.getEmail());
+            redisService.saveEmailVerification(validateEmailDto.getEmail(), 10);
+        } else {
+            throw new BaseException(AuthErrorCode.INCORRECT_CODE);
+        }
     }
 
     @Override
     public void registerMember(MemberBaseDto memberBaseDto) {
-        // 레디스에 등록되어있는 이메일인지 확인 과정 필요
-        register(memberBaseDto);
+        Boolean flag = redisService.getEmailVerification(memberBaseDto.getEmail());
+        if(flag != null && flag){
+            register(memberBaseDto);
+            redisService.deleteEmailVerification(memberBaseDto.getEmail());
+        } else {
+            throw new BaseException(AuthErrorCode.INVALID_EMAIL);
+        }
+
     }
 
     private void checkAlreadyUsed(String email) {

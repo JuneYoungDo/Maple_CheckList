@@ -4,6 +4,7 @@ import com.maple.checklist.global.config.exception.BaseException;
 import com.maple.checklist.global.config.exception.errorCode.AuthErrorCode;
 import com.maple.checklist.global.config.security.auth.PrincipalDetailService;
 import com.maple.checklist.global.config.security.auth.PrincipalDetails;
+import com.maple.checklist.global.utils.RedisService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -30,6 +31,7 @@ public class JwtTokenProvider {
     private String jwtSecretKey;
 
     private final PrincipalDetailService principalDetailService;
+    private final RedisService redisService;
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final long TOKEN_VALID_TIME = 1000 * 60L * 60L * 6L;  // 유효기간 6시간
@@ -75,6 +77,10 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token) {
+        Boolean flag = redisService.isLogoutToken(token);
+        if (flag != null && flag) {
+            throw new BaseException(AuthErrorCode.INVALID_JWT);
+        }
         try {
             Jwts.parser().setSigningKey(jwtSecretKey).parseClaimsJws(token);
             return true;
@@ -87,6 +93,26 @@ public class JwtTokenProvider {
         } catch (IllegalArgumentException e) {
             throw new BaseException(AuthErrorCode.EMPTY_JWT);
         }
+    }
+
+    public long getRemainingValidityInSeconds(String token) {
+        Claims claims = Jwts.parser()
+            .setSigningKey(jwtSecretKey)
+            .parseClaimsJws(token)
+            .getBody();
+
+        Date expirationDate = claims.getExpiration();
+
+        Date now = new Date();
+
+        long remainingValidityInMillis = expirationDate.getTime() - now.getTime();
+        long remainingValidityInSeconds = remainingValidityInMillis / 1000;
+
+        if (remainingValidityInSeconds < 0) {
+            return -1;
+        }
+
+        return remainingValidityInSeconds;
     }
 
     public boolean minimumValidateToken(String token) {

@@ -8,4 +8,6 @@ public interface UpdateMemberUseCase {
 
     void withdrawMember(Member member, PasswordDto passwordDto);
     void changePassword(Member member, ChangePasswordDto changePasswordDto);
+    void logout(String authorization);
+    void resetPassword(Member member);
 }

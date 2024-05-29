@@ -3,6 +3,7 @@ package com.maple.checklist.domain.member.controller;
 import com.maple.checklist.domain.member.dto.request.EmailDto;
 import com.maple.checklist.domain.member.dto.request.LoginDto;
 import com.maple.checklist.domain.member.dto.request.MemberBaseDto;
+import com.maple.checklist.domain.member.dto.request.ValidateEmailDto;
 import com.maple.checklist.domain.member.usecase.RegisterMemberUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,6 @@ public class RegisterMemberController {
         return new ResponseEntity(200, HttpStatus.OK);
     }
 
-
     @PostMapping("/send-email")
     public ResponseEntity sendEmail(@Valid @RequestBody EmailDto emailDto) {
         registerMemberUseCase.sendValidateEmail(emailDto.getEmail());
@@ -39,8 +39,8 @@ public class RegisterMemberController {
     }
 
     @PostMapping("/verify-email")
-    public ResponseEntity verifyEmail() {
-
-        return null;
+    public ResponseEntity verifyEmail(@Valid @RequestBody ValidateEmailDto validateEmailDto) {
+        registerMemberUseCase.validateEmail(validateEmailDto);
+        return new ResponseEntity(200, HttpStatus.OK);
     }
 }
