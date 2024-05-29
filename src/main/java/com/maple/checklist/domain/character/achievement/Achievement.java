@@ -38,6 +38,15 @@ public class Achievement {
     @Column(name = "monthly_complte")
     private Long monthlyComplete;
 
+    void achievement() {
+        this.daily = 0L;
+        this.dailyComplete = 0L;
+        this.weekly = 0L;
+        this.weeklyComplete = 0L;
+        this.monthly = 0L;
+        this.monthlyComplete = 0L;
+    }
+
     public void update(Long daily, Long dailyComplete, Long weekly, Long weeklyComplete,
         Long monthly, Long monthlyComplete) {
         this.daily = daily;
@@ -52,7 +61,7 @@ public class Achievement {
         if (this.dailyComplete == null) {
             this.dailyComplete = 0L;
         }
-        if(after) {
+        if (after) {
             this.dailyComplete++;
         } else {
             this.dailyComplete--;
@@ -63,7 +72,7 @@ public class Achievement {
         if (this.weeklyComplete == null) {
             this.weeklyComplete = 0L;
         }
-        if(after) {
+        if (after) {
             this.weeklyComplete++;
         } else {
             this.weeklyComplete--;
@@ -74,7 +83,7 @@ public class Achievement {
         if (this.monthlyComplete == null) {
             this.monthlyComplete = 0L;
         }
-        if(after) {
+        if (after) {
             this.monthlyComplete++;
         } else {
             this.monthlyComplete--;

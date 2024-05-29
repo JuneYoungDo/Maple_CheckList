@@ -40,6 +40,7 @@ public class GetCharacterService implements GetCharacterUseCase {
     private CharacterInformation convertToCharacterInformation(Character character) {
         Achievement achievement = character.getAchievement();
         return CharacterInformation.builder()
+            .characterId(character.getCharacterId())
             .nickname(character.getName())
             .level(character.getLevel())
             .world(character.getWorld())
@@ -59,9 +60,6 @@ public class GetCharacterService implements GetCharacterUseCase {
     private Character validateCharacter(Member member, Long characterId) {
         Character character = characterRepository.findCharacterByCharacterIdAndDeleted(characterId)
             .orElseThrow(() -> new BaseException(CharacterErrorCode.INVALID_CHARACTER_ID));
-        System.out.println(character.getMember().getMemberId());
-        System.out.println(member.getMemberId());
-        System.out.println(!Objects.equals(character.getMember().getMemberId(), member.getMemberId()));
         if (!Objects.equals(character.getMember().getMemberId(), member.getMemberId())) {
             throw new BaseException(CharacterErrorCode.INVALID_CHARACTER);
         }

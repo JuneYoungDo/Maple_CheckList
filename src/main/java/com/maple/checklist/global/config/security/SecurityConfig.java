@@ -44,6 +44,8 @@ public class SecurityConfig {
                 authorize -> authorize
                     .requestMatchers("/login", "/register", "/verify-email").permitAll()
                     .requestMatchers("/api/v1/member/**").hasAnyRole("MEMBER", "ADMIN")
+                    .requestMatchers("/api/v1/character/**").hasAnyRole("MEMBER", "ADMIN")
+                    .requestMatchers("/api/v1/list/**").hasAnyRole("MEMBER", "ADMIN")
                     .anyRequest().permitAll()
             )
             .exceptionHandling(exceptionHandling -> exceptionHandling

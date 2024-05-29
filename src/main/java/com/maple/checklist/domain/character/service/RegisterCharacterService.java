@@ -1,5 +1,7 @@
 package com.maple.checklist.domain.character.service;
 
+import com.maple.checklist.domain.character.achievement.Achievement;
+import com.maple.checklist.domain.character.achievement.AchievementService;
 import com.maple.checklist.domain.character.dto.request.CharacterDto;
 import com.maple.checklist.domain.character.entity.Character;
 import com.maple.checklist.domain.character.job.JobRepository;
@@ -21,6 +23,7 @@ public class RegisterCharacterService implements RegisterCharacterUseCase {
     private final MapleService mapleService;
     private final CharacterRepository characterRepository;
     private final JobRepository jobRepository;
+    private final AchievementService achievementService;
 
     private void save(Character character) {
         characterRepository.save(character);
@@ -36,6 +39,7 @@ public class RegisterCharacterService implements RegisterCharacterUseCase {
                 jobRepository.findDefaultJob()
             ))
             .build();
+        achievementService.updateAchievement(character, 0L, 0L, 0L, 0L, 0L, 0L);
         save(character);
     }
 
@@ -47,6 +51,6 @@ public class RegisterCharacterService implements RegisterCharacterUseCase {
 
     @Override
     public void registerCharacter(Member member, CharacterDto characterDto) {
-        register(member,characterDto);
+        register(member, characterDto);
     }
 }

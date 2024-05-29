@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CharacterInformation {
+    private Long characterId;
     private String nickname;
     private Long level;
     private String world;
