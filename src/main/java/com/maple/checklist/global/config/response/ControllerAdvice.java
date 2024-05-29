@@ -55,10 +55,10 @@ public class ControllerAdvice {
         return convert(GlobalErrorCode.NOT_SUPPORTED_MEDIA_TYPE_ERROR);
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ExceptionResponse> handleRuntimeException(RuntimeException e) {
-        return convert(GlobalErrorCode.SERVER_ERROR);
-    }
+//    @ExceptionHandler(RuntimeException.class)
+//    public ResponseEntity<ExceptionResponse> handleRuntimeException(RuntimeException e) {
+//        return convert(GlobalErrorCode.SERVER_ERROR);
+//    }
 
     private ResponseEntity<ExceptionResponse> convert(ErrorCode e) {
         ResponseEntity<ExceptionResponse> res = new ResponseEntity<>(new ExceptionResponse(e.getErrorCode(), e.getErrorMessage()), e.getStatus());
