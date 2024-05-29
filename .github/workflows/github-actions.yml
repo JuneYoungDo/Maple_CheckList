@@ -77,7 +77,6 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           script: |
-            docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
             sudo docker rm -f questbook
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/questbook:prod
             docker-compose -f docker-compose-prod.yml up -d
@@ -93,7 +92,6 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           script: |
-            docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
             sudo docker rm -f questbook
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/questbook:dev
             docker-compose up -d
