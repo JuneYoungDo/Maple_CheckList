@@ -8,7 +8,10 @@ import com.maple.checklist.domain.character.usecase.GetCharacterUseCase;
 import com.maple.checklist.domain.member.entity.Member;
 import com.maple.checklist.global.config.exception.BaseException;
 import com.maple.checklist.global.config.exception.errorCode.CharacterErrorCode;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +22,22 @@ public class GetCharacterService implements GetCharacterUseCase {
     private final CharacterRepository characterRepository;
 
     @Override
+    public List<CharacterInformation> getCharacterList(Member member) {
+        List<Character> characters = characterRepository.findCharactersByMember(member)
+            .orElseGet(ArrayList::new);
+
+        return characters.stream()
+            .map(this::convertToCharacterInformation)
+            .collect(Collectors.toList());
+    }
+
+    @Override
     public CharacterInformation getCharacterInformation(Member member, Long characterId) {
         Character character = validateCharacter(member,characterId);
+        return convertToCharacterInformation(character);
+    }
+
+    private CharacterInformation convertToCharacterInformation(Character character) {
         Achievement achievement = character.getAchievement();
         return CharacterInformation.builder()
             .nickname(character.getName())
@@ -28,9 +45,9 @@ public class GetCharacterService implements GetCharacterUseCase {
             .world(character.getWorld())
             .job(character.getJob().getName())
             .img(character.getJob().getImage())
-            .dailyRate(calculateRate(achievement.getDaily(),achievement.getDailyComplete()))
-            .weeklyRate(calculateRate(achievement.getWeekly(),achievement.getWeeklyComplete()))
-            .monthlyRate(calculateRate(achievement.getMonthly(),achievement.getMonthlyComplete()))
+            .dailyRate(calculateRate(achievement.getDaily(), achievement.getDailyComplete()))
+            .weeklyRate(calculateRate(achievement.getWeekly(), achievement.getWeeklyComplete()))
+            .monthlyRate(calculateRate(achievement.getMonthly(), achievement.getMonthlyComplete()))
             .build();
     }
 
@@ -42,6 +59,9 @@ public class GetCharacterService implements GetCharacterUseCase {
     private Character validateCharacter(Member member, Long characterId) {
         Character character = characterRepository.findCharacterByCharacterIdAndDeleted(characterId)
             .orElseThrow(() -> new BaseException(CharacterErrorCode.INVALID_CHARACTER_ID));
+        System.out.println(character.getMember().getMemberId());
+        System.out.println(member.getMemberId());
+        System.out.println(!Objects.equals(character.getMember().getMemberId(), member.getMemberId()));
         if (!Objects.equals(character.getMember().getMemberId(), member.getMemberId())) {
             throw new BaseException(CharacterErrorCode.INVALID_CHARACTER);
         }
