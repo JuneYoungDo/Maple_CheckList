@@ -62,7 +62,6 @@ jobs:
       - name: Docker build & push to dev
         if: contains(github.ref, 'develop')
         run: |
-          ls build/libs
           docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
           docker build -f Dockerfile-dev -t ${{secrets.DOCKER_USERNAME}}/questbook:dev .
           docker push ${{secrets.DOCKER_USERNAME}}/questbook:dev
