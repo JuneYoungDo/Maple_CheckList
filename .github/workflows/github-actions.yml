@@ -95,6 +95,6 @@ jobs:
             sudo docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
             sudo docker rm -f questbook-dev
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/questbook-dev
-            docker-compose up -d
-            docker image prune -f
+            sudo docker-compose up -d
+            sudo docker image prune -f
 
