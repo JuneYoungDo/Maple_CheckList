@@ -80,7 +80,6 @@ jobs:
           port: 22
           script: |
             sudo docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
-          # 실행중인 도커 컨테이너 제거 (docker-compose.yml 파일 내의 명)
             sudo docker rm -f questbook-prod
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/questbook:prod
             sudo docker-compose -f docker-compose-prod.yml up -d
