@@ -79,7 +79,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           script: |
-            sudo docker rm -f questbook:prod
+            sudo docker rm -f questbook-prod
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/questbook:prod
             docker-compose -f docker-compose-prod.yml up -d
             docker image prune -f
@@ -95,7 +95,7 @@ jobs:
           port: 22
           script: |
             sudo docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
-            sudo docker rm -f questbook:dev
+            sudo docker rm -f questbook-dev
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/questbook:dev
             sudo docker-compose up -d
             sudo docker image prune -f
