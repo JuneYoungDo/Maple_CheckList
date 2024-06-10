@@ -1,7 +1,7 @@
 package com.maple.checklist.domain.character.entity;
 
 import com.maple.checklist.domain.character.achievement.Achievement;
-import com.maple.checklist.domain.character.job.CharacterJob;
+import com.maple.checklist.domain.character.characterJob.CharacterJob;
 import com.maple.checklist.domain.list.entity.Daily;
 import com.maple.checklist.domain.list.entity.Monthly;
 import com.maple.checklist.domain.list.entity.Weekly;

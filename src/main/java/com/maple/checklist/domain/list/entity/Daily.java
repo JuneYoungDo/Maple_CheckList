@@ -42,4 +42,8 @@ public class Daily extends BaseEntity {
         this.completed = !this.getCompleted();
         return this.completed;
     }
+
+    public void resetCompleted() {
+        this.completed = false;
+    }
 }

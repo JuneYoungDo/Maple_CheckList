@@ -1,4 +1,4 @@
-package com.maple.checklist.domain.character.job;
+package com.maple.checklist.domain.character.characterJob;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

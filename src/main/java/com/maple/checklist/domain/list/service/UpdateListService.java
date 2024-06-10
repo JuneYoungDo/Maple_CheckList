@@ -25,8 +25,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -81,10 +83,53 @@ public class UpdateListService implements UpdateListUseCase {
             }
             default -> throw new BaseException(ListErrorCode.INVALID_LIST_TYPE);
         }
-        updateAchievement(achievement, checkType,after);
+        updateAchievement(achievement, checkType, after);
     }
 
-    private void updateAchievement(Achievement achievement, ListType listType,Boolean after) {
+    @Override
+    public void resetDaily() {
+        List<Daily> dailyList = dailyRepository.findAllByDeleted().orElse(new ArrayList<>());
+        System.out.println(dailyList.size());
+        log.info("==== Daily   Reset ====");
+        dailyList.forEach(daily -> {
+            boolean before = daily.getCompleted();
+            daily.resetCompleted();
+            log.info("==== Daily Id: {}, before completed: {}, after completed: {} ====",
+                daily.getDailyId(), before, daily.getCompleted());
+        });
+        log.info("=======================");
+        achievementService.resetAchievement(ListType.DAILY.name());
+    }
+
+    @Override
+    public void resetWeekly() {
+        List<Weekly> weeklyList = weeklyRepository.findAllByDeleted().orElse(new ArrayList<>());
+        log.info("==== Weekly  Reset ====");
+        weeklyList.forEach(weekly -> {
+            boolean before = weekly.getCompleted();
+            weekly.resetCompleted();
+            log.info("==== Weekly Id: {}, before completed: {}, after completed: {} ====",
+                weekly.getWeeklyId(), before, weekly.getCompleted());
+        });
+        log.info("=======================");
+        achievementService.resetAchievement(ListType.WEEKLY.name());
+    }
+
+    @Override
+    public void resetMonthly() {
+        List<Monthly> monthList = monthlyRepository.findAllByDeleted().orElse(new ArrayList<>());
+        log.info("==== Monthly Reset ====");
+        monthList.forEach(monthly -> {
+            boolean before = monthly.getCompleted();
+            monthly.resetCompleted();
+            log.info("==== Monthly Id: {}, before completed: {}, after completed: {} ====",
+                monthly.getMonthlyId(), before, monthly.getCompleted());
+        });
+        log.info("=======================");
+        achievementService.resetAchievement(ListType.MONTHLY.name());
+    }
+
+    private void updateAchievement(Achievement achievement, ListType listType, Boolean after) {
         switch (listType) {
             case DAILY -> achievement.updateDailyComplete(after);
             case WEEKLY -> achievement.updateWeeklyComplete(after);

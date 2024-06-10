@@ -1,5 +1,6 @@
 package com.maple.checklist.domain.character.achievement;
 
+import com.maple.checklist.global.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "achievement")
-public class Achievement {
+public class Achievement extends BaseEntity {
     @Id
     @Column(name = "achievement_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,13 +39,12 @@ public class Achievement {
     @Column(name = "monthly_complte")
     private Long monthlyComplete;
 
-    void achievement() {
-        this.daily = 0L;
-        this.dailyComplete = 0L;
-        this.weekly = 0L;
-        this.weeklyComplete = 0L;
-        this.monthly = 0L;
-        this.monthlyComplete = 0L;
+    public void resetAchievement(String type) {
+        switch (type) {
+            case "DAILY" -> this.dailyComplete = 0L;
+            case "WEEKLY" -> this.weeklyComplete = 0L;
+            case "MONTHLY" -> this.monthlyComplete = 0L;
+        }
     }
 
     public void update(Long daily, Long dailyComplete, Long weekly, Long weeklyComplete,

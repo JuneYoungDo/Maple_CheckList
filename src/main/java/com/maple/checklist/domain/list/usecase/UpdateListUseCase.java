@@ -7,4 +7,8 @@ import com.maple.checklist.domain.member.entity.Member;
 public interface UpdateListUseCase {
     void editCheckList(Member member, Long characterId, CheckList checkList);
     void checkOntItem(Member member, CheckOne checkOne);
+
+    void resetDaily();
+    void resetWeekly();
+    void resetMonthly();
 }

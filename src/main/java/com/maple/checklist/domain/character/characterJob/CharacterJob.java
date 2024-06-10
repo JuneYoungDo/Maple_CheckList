@@ -1,4 +1,4 @@
-package com.maple.checklist.domain.character.job;
+package com.maple.checklist.domain.character.characterJob;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

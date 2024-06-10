@@ -2,6 +2,8 @@ package com.maple.checklist.domain.character.achievement;
 
 import com.maple.checklist.domain.character.entity.Character;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +38,11 @@ public class AchievementService {
                 monthlyComplete);
         }
         character.updateAchievement(achievement);
+    }
+
+    public void resetAchievement(String type) {
+        List<Achievement> achievementList = achievementRepository.findAllByDeleted()
+            .orElse(new ArrayList<>());
+        achievementList.forEach(achievement -> achievement.resetAchievement(type));
     }
 }
