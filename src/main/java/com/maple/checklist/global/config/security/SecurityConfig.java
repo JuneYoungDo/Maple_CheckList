@@ -1,5 +1,6 @@
 package com.maple.checklist.global.config.security;
 
+import com.maple.checklist.batch.MaintenanceFilter;
 import com.maple.checklist.global.config.security.auth.CustomAccessDeniedHandler;
 import com.maple.checklist.global.config.security.auth.CustomAuthenticationEntryPoint;
 import com.maple.checklist.global.config.security.jwt.JwtAuthenticationFilter;
@@ -21,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private  final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
@@ -33,6 +34,7 @@ public class SecurityConfig {
                 UsernamePasswordAuthenticationFilter.class
             )
             .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class)
+            .addFilterBefore(new MaintenanceFilter(), JwtExceptionFilter.class)
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(
                 (sessionManagement) ->
