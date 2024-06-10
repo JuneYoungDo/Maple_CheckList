@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "job")
-public class Job {
+public class CharacterJob {
     @Id
     @Column(name = "job_id",nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

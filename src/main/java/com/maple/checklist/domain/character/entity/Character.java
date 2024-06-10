@@ -1,7 +1,7 @@
 package com.maple.checklist.domain.character.entity;
 
 import com.maple.checklist.domain.character.achievement.Achievement;
-import com.maple.checklist.domain.character.job.Job;
+import com.maple.checklist.domain.character.job.CharacterJob;
 import com.maple.checklist.domain.list.entity.Daily;
 import com.maple.checklist.domain.list.entity.Monthly;
 import com.maple.checklist.domain.list.entity.Weekly;
@@ -52,7 +52,7 @@ public class Character extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_id")
-    private Job job;
+    private CharacterJob characterJob;
 
     @OneToOne
     @JoinColumn(name = "achievement")
