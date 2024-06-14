@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,6 +20,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class MailUtilsService {
+
+    @Value("${custom.server}")
+    private String SERVER_VERSION;
+
     private final JavaMailSender javaMailSender;
     private static final String FROM_ADDRESS = "QuestBookService@gmail.com";   // 변경 필요
 
@@ -37,7 +42,7 @@ public class MailUtilsService {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentDate = dateFormat.format(new Date());
 
-        String subject = "Quest Book Today Log ! _ " + currentDate;
+        String subject = "Quest Book Today Log ! _ " + currentDate + " _ " + SERVER_VERSION;
         helper.setSubject(subject);
         String content = "오늘의 로그 파일을 첨부합니다.\n\n날짜 및 시간: " + currentDate;
         helper.setText(content);
