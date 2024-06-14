@@ -56,7 +56,7 @@ public class GetCharacterService implements GetCharacterUseCase {
         return Math.round(percent);
     }
 
-    private Character validateCharacter(Member member, Long characterId) {
+    public Character validateCharacter(Member member, Long characterId) {
         Character character = characterRepository.findCharacterByCharacterIdAndDeleted(characterId)
             .orElseThrow(() -> new BaseException(CharacterErrorCode.INVALID_CHARACTER_ID));
         if (!Objects.equals(character.getMember().getMemberId(), member.getMemberId())) {
