@@ -89,7 +89,6 @@ public class UpdateListService implements UpdateListUseCase {
     @Override
     public void resetDaily() {
         List<Daily> dailyList = dailyRepository.findAllByDeleted().orElse(new ArrayList<>());
-        System.out.println(dailyList.size());
         log.info("==== Daily   Reset ====");
         dailyList.forEach(daily -> {
             boolean before = daily.getCompleted();

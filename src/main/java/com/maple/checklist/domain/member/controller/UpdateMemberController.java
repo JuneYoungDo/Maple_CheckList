@@ -24,7 +24,6 @@ public class UpdateMemberController {
 
     private final UpdateMemberUseCase updateMemberUseCase;
 
-
     @PatchMapping("/reset-pwd")
     public ResponseEntity resetPwd(@CurrentMember Member member) {
         updateMemberUseCase.resetPassword(member);

@@ -25,9 +25,12 @@ public class BatchScheduler {
     @Autowired
     private Job monthlyJob;
 
-    @Scheduled(cron = "0 50 23 * * *")  // 매일 밤 11시 50분에 실행
-    public void scheduleDailyJob() throws Exception {
-        jobLauncher.run(dailyJob, new JobParametersBuilder()
+    @Autowired
+    private Job dailyLastJob;
+
+    @Scheduled(cron = "0 50 23 L * ?")  // 매달 마지막 날 밤 11시 50분에 실행
+    public void scheduleMonthlyJob() throws Exception {
+        jobLauncher.run(monthlyJob, new JobParametersBuilder()
             .addLong("time", System.currentTimeMillis())
             .addLocalDateTime("LocalDateTime", LocalDateTime.now())
             .toJobParameters());
@@ -41,9 +44,17 @@ public class BatchScheduler {
             .toJobParameters());
     }
 
-    @Scheduled(cron = "0 50 23 L * ?")  // 매달 마지막 날 밤 11시 50분에 실행
-    public void scheduleMonthlyJob() throws Exception {
-        jobLauncher.run(monthlyJob, new JobParametersBuilder()
+    @Scheduled(cron = "0 50 23 * * *")  // 매일 밤 11시 50분에 실행
+    public void scheduleDailyJob() throws Exception {
+        jobLauncher.run(dailyJob, new JobParametersBuilder()
+            .addLong("time", System.currentTimeMillis())
+            .addLocalDateTime("LocalDateTime", LocalDateTime.now())
+            .toJobParameters());
+    }
+
+    @Scheduled(cron = "0 57 23 * * *")  // 매일 밤 11시 57분에 실행
+    public void scheduleDailyLastJob() throws Exception {
+        jobLauncher.run(dailyLastJob, new JobParametersBuilder()
             .addLong("time", System.currentTimeMillis())
             .addLocalDateTime("LocalDateTime", LocalDateTime.now())
             .toJobParameters());

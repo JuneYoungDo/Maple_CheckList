@@ -1,12 +1,21 @@
 package com.maple.checklist.global.utils;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import java.io.File;
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MailUtilsService {
@@ -19,6 +28,34 @@ public class MailUtilsService {
     private static final String ALL_CHARACTERS = UPPERCASE + LOWERCASE + DIGITS;
 
     private static final SecureRandom RANDOM = new SecureRandom();
+
+    public void sendLogMail() throws MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        // 현재 날짜와 시간을 포함한 제목과 내용 생성
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentDate = dateFormat.format(new Date());
+
+        String subject = "Quest Book Today Log ! _ " + currentDate;
+        helper.setSubject(subject);
+        String content = "오늘의 로그 파일을 첨부합니다.\n\n날짜 및 시간: " + currentDate;
+        helper.setText(content);
+
+        String logDir = "logs";
+        String dailyErrorLogPath = logDir + "/daily-error-log.log";
+        String dailyLogPath = logDir + "/daily-log.log";
+
+        FileSystemResource file1 = new FileSystemResource(new File(dailyErrorLogPath));
+        FileSystemResource file2 = new FileSystemResource(new File(dailyLogPath));
+        helper.addAttachment(currentDate + "_daily-error-log.log", file1);
+        helper.addAttachment(currentDate + "_daily-log.log", file2);
+
+        helper.setFrom(FROM_ADDRESS);
+        helper.setTo(FROM_ADDRESS);
+        javaMailSender.send(message);
+        log.info("SUCCESS for message sending");
+    }
 
     public String sendAuthMail(String email) {
         String code = generateRandomNumber();
@@ -62,7 +99,6 @@ public class MailUtilsService {
         sendMail(email, title, emailContent);
         return code;
     }
-
 
     public String generatePassword() {
         StringBuilder password = new StringBuilder(8);

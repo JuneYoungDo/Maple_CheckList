@@ -27,5 +27,10 @@ public class BatchConfiguration {
     public Job monthlyJob() {
         return batchService.createJob("MONTHLY");
     }
+
+    @Bean
+    public Job dailyLastJob() {
+        return batchService.createDailyLastJob();
+    }
 }
 

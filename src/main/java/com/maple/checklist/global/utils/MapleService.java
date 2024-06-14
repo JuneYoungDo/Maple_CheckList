@@ -52,7 +52,6 @@ public class MapleService {
             throw new BaseException(CharacterErrorCode.INVALID_NICKNAME);
         }
         JSONObject jsonObject = parseBody(response);
-        System.out.println((String) jsonObject.get("character_image"));
 
         return CharacterDto.builder()
             .nickname((String)jsonObject.get("character_name"))
