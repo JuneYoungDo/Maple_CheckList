@@ -1,7 +1,7 @@
 package com.maple.checklist.domain.character.entity;
 
 import com.maple.checklist.domain.character.achievement.Achievement;
-import com.maple.checklist.domain.character.characterJob.CharacterJob;
+import com.maple.checklist.domain.character.dto.request.CharacterDto;
 import com.maple.checklist.domain.list.entity.Daily;
 import com.maple.checklist.domain.list.entity.Monthly;
 import com.maple.checklist.domain.list.entity.Weekly;
@@ -44,15 +44,20 @@ public class Character extends BaseEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "character_job", nullable = false)
+    private String characterJob;
+
     @Column(name = "level", nullable = false)
     private Long level;
 
     @Column(name = "world", nullable = false)
     private String world;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_id")
-    private CharacterJob characterJob;
+    @Column(name = "ocid", nullable = false)
+    private String ocid;
+
+    @Column(name = "img", length = 500)
+    private String img;
 
     @OneToOne
     @JoinColumn(name = "achievement")
@@ -67,5 +72,13 @@ public class Character extends BaseEntity {
 
     public void updateAchievement(Achievement achievement) {
         this.achievement = achievement;
+    }
+
+    public void updateInformation(CharacterDto characterDto) {
+        this.name = characterDto.getNickname();
+        this.characterJob = characterDto.getJob();
+        this.level = characterDto.getLevel();
+        this.world = characterDto.getWorld();
+        this.img = characterDto.getImg();
     }
 }

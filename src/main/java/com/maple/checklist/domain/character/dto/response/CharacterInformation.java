@@ -15,7 +15,6 @@ public class CharacterInformation {
     private Long level;
     private String world;
     private String job;
-    private String img;
     private Long dailyRate;
     private Long weeklyRate;
     private  Long monthlyRate;

@@ -14,4 +14,6 @@ public class CharacterDto {
     private Long level;
     private String world;
     private String job;
+    private String ocid;
+    private String img;
 }

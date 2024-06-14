@@ -3,7 +3,6 @@ package com.maple.checklist.domain.character.service;
 import com.maple.checklist.domain.character.achievement.AchievementService;
 import com.maple.checklist.domain.character.dto.request.CharacterDto;
 import com.maple.checklist.domain.character.entity.Character;
-import com.maple.checklist.domain.character.characterJob.CharacterJobRepository;
 import com.maple.checklist.domain.character.repository.CharacterRepository;
 import com.maple.checklist.domain.character.usecase.RegisterCharacterUseCase;
 import com.maple.checklist.domain.member.entity.Member;
@@ -21,7 +20,6 @@ public class RegisterCharacterService implements RegisterCharacterUseCase {
 
     private final MapleService mapleService;
     private final CharacterRepository characterRepository;
-    private final CharacterJobRepository characterJobRepository;
     private final AchievementService achievementService;
 
     private void save(Character character) {
@@ -32,11 +30,11 @@ public class RegisterCharacterService implements RegisterCharacterUseCase {
         Character character = Character.builder()
             .member(member)
             .name(characterDto.getNickname())
-            .level(characterDto.getLevel())
+            .characterJob(characterDto.getJob())
             .world(characterDto.getWorld())
-            .characterJob(characterJobRepository.findJobByName(characterDto.getJob()).orElse(
-                characterJobRepository.findDefaultJob()
-            ))
+            .level(characterDto.getLevel())
+            .ocid(characterDto.getOcid())
+            .img(characterDto.getImg())
             .build();
         achievementService.updateAchievement(character, 0L, 0L, 0L, 0L, 0L, 0L);
         save(character);

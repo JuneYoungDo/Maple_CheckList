@@ -1,5 +1,6 @@
 package com.maple.checklist.batch;
 
+import com.maple.checklist.domain.character.usecase.UpdateCharacterUseCase;
 import com.maple.checklist.domain.list.usecase.UpdateListUseCase;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -28,6 +29,7 @@ public class BatchService {
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
     private final UpdateListUseCase updateListUseCase;
+    private final UpdateCharacterUseCase updateCharacterUseCase;
 
     public Job createJob(String jobType) {
         return new JobBuilder(jobType + "_JOB", jobRepository)
@@ -82,7 +84,10 @@ public class BatchService {
     public Tasklet cleanupTasklet(String jobType) {
         return (contribution, chunkContext) -> {
             switch (jobType) {
-                case "DAILY" -> updateListUseCase.resetDaily();
+                case "DAILY" -> {
+                    updateListUseCase.resetDaily();
+                    updateCharacterUseCase.updateAllCharacterInformation();
+                }
                 case "WEEKLY" -> updateListUseCase.resetWeekly();
                 case "MONTHLY" -> updateListUseCase.resetMonthly();
                 default -> throw new IllegalArgumentException("Unknown job type: " + jobType);

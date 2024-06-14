@@ -14,4 +14,7 @@ public interface CharacterRepository extends JpaRepository<Character,Long> {
 
     @Query(value = "select c from Character c where c.characterId = :characterId and c.deleted = false")
     Optional<Character> findCharacterByCharacterIdAndDeleted(Long characterId);
+
+    @Query(value = "select c from Character c where c.deleted = false")
+    Optional<List<Character>> findAllByDeleted();
 }

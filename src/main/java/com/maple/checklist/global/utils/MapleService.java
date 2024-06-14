@@ -42,7 +42,7 @@ public class MapleService {
         return (String) jsonObject.get("ocid");
     }
 
-    private CharacterDto useGetCharacterInformation(String ocid)
+    public CharacterDto useGetCharacterInformation(String ocid)
         throws IOException, InterruptedException, ParseException {
         String id = URLEncoder.encode(ocid, StandardCharsets.UTF_8);
         String url = "https://open.api.nexon.com/maplestory/v1/character/basic?ocid=" + id;
@@ -52,12 +52,15 @@ public class MapleService {
             throw new BaseException(CharacterErrorCode.INVALID_NICKNAME);
         }
         JSONObject jsonObject = parseBody(response);
+        System.out.println((String) jsonObject.get("character_image"));
 
         return CharacterDto.builder()
             .nickname((String)jsonObject.get("character_name"))
             .level((Long)jsonObject.get("character_level"))
             .world((String)jsonObject.get("world_name"))
             .job((String)jsonObject.get("character_class"))
+            .img((String) jsonObject.get("character_image"))
+            .ocid(ocid)
             .build();
     }
 
