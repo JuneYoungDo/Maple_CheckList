@@ -13,6 +13,7 @@ import com.maple.checklist.global.config.exception.BaseException;
 import com.maple.checklist.global.config.exception.errorCode.CharacterErrorCode;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,10 @@ public class GetListService implements GetListUseCase {
             monthly -> monthlies.add(new CheckItemRes(monthly.getMonthlyId(), monthly.getContent(),
                 monthly.getCompleted()))
         );
+
+        dailies.sort(Comparator.comparing(CheckItemRes::getCompleted));
+        weeklies.sort(Comparator.comparing(CheckItemRes::getCompleted));
+        monthlies.sort(Comparator.comparing(CheckItemRes::getCompleted));
 
         return CheckListRes.builder()
             .dailyList(dailies)
