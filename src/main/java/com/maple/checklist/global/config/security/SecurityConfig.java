@@ -44,11 +44,13 @@ public class SecurityConfig {
             .httpBasic(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(
                 authorize -> authorize
-                    .requestMatchers("/login", "/register", "/verify-email").permitAll()
+                    .requestMatchers("/api/v1/login", "/api/v1/register", "/api/v1/verify-email",
+                        "/api/v1/send-email")
+                    .permitAll()
                     .requestMatchers("/api/v1/member/**").hasAnyRole("MEMBER", "ADMIN")
                     .requestMatchers("/api/v1/character/**").hasAnyRole("MEMBER", "ADMIN")
                     .requestMatchers("/api/v1/list/**").hasAnyRole("MEMBER", "ADMIN")
-                    .anyRequest().permitAll()
+                    .anyRequest().denyAll()
             )
             .exceptionHandling(exceptionHandling -> exceptionHandling
                 .accessDeniedHandler(customAccessDeniedHandler)

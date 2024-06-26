@@ -33,7 +33,7 @@ public class GetCharacterService implements GetCharacterUseCase {
 
     @Override
     public CharacterInformation getCharacterInformation(Member member, Long characterId) {
-        Character character = validateCharacter(member,characterId);
+        Character character = validateCharacter(member, characterId);
         return convertToCharacterInformation(character);
     }
 
@@ -52,6 +52,9 @@ public class GetCharacterService implements GetCharacterUseCase {
     }
 
     private Long calculateRate(Long total, Long completed) {
+        if (total == 0) {
+            return 100L;
+        }
         double percent = (double) completed * 100 / total;
         return Math.round(percent);
     }

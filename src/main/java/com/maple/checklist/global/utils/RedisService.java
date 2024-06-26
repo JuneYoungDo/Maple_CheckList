@@ -14,7 +14,7 @@ public class RedisService {
     private RedisTemplate<String, Object> redisTemplate;
 
     private void validateKey(String key) {
-        if (key == null) {
+        if (key == null || key.equals("")) {
             log.error("Redis key must not be null");
             throw new IllegalArgumentException("Key must not be null");
         }
