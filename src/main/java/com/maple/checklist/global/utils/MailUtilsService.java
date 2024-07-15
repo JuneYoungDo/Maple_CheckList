@@ -14,6 +14,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -142,7 +143,8 @@ public class MailUtilsService {
         return sb.toString();
     }
 
-    private void sendMail(String to, String title, String text) {
+    @Async
+    public void sendMail(String to, String title, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject(title);
