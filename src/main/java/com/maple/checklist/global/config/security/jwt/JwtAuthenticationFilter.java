@@ -1,5 +1,8 @@
 package com.maple.checklist.global.config.security.jwt;
 
+import static com.maple.checklist.global.config.exception.errorCode.AuthErrorCode.EMPTY_JWT;
+
+import com.maple.checklist.global.config.exception.BaseException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -21,6 +24,9 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
         throws IOException, ServletException {
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+        if(token == null) {
+            throw new BaseException(EMPTY_JWT);
+        }
         if(!Objects.equals(token, "")) {
             Authentication authentication =
                 jwtTokenProvider.validateToken(token) ?
