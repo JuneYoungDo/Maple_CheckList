@@ -166,7 +166,7 @@ public class UpdateListService implements UpdateListUseCase {
         return monthly;
     }
 
-    private void editListAndUpdateAchievement(Character character, CheckList checkList) {
+    public void editListAndUpdateAchievement(Character character, CheckList checkList) {
         long daily, dailyComplete, weekly, weeklyComplete, monthly, monthlyComplete;
         List<CheckItem> dailyList = checkList.getDailyList();
         List<CheckItem> weeklyList = checkList.getWeeklyList();

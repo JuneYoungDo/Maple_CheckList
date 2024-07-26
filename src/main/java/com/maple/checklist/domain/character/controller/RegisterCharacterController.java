@@ -1,6 +1,6 @@
 package com.maple.checklist.domain.character.controller;
 
-import com.maple.checklist.domain.character.dto.request.CharacterDto;
+import com.maple.checklist.domain.character.dto.request.RegisterCharacterDto;
 import com.maple.checklist.domain.character.usecase.RegisterCharacterUseCase;
 import com.maple.checklist.domain.character.usecase.UpdateCharacterUseCase;
 import com.maple.checklist.domain.member.entity.Member;
@@ -29,8 +29,8 @@ public class RegisterCharacterController {
 
     @PostMapping("")
     public ResponseEntity register(@CurrentMember Member member,
-        @RequestBody CharacterDto characterDto) {
-        registerCharacterUseCase.registerCharacter(member, characterDto);
+        @RequestBody RegisterCharacterDto registerCharacterDto) {
+        registerCharacterUseCase.registerCharacter(member, registerCharacterDto);
         return new ResponseEntity(200, HttpStatus.OK);
     }
 
