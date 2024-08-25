@@ -5,6 +5,7 @@ import com.maple.checklist.domain.character.entity.Character;
 import com.maple.checklist.domain.character.repository.CharacterRepository;
 import com.maple.checklist.domain.character.usecase.UpdateCharacterUseCase;
 import com.maple.checklist.domain.member.entity.Member;
+import com.maple.checklist.global.config.exception.BaseException;
 import com.maple.checklist.global.utils.MapleService;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
@@ -29,9 +30,12 @@ public class UpdateCharacterService implements UpdateCharacterUseCase {
         List<Character> characterList = characterRepository.findAllByDeleted()
             .orElse(new ArrayList<>());
         for (Character character : characterList) {
-            CharacterDto characterDto = mapleService.useGetCharacterInformation(
-                character.getOcid());
-            character.updateInformation(characterDto);
+            try {
+                CharacterDto characterDto = mapleService.useGetCharacterInformation(
+                    character.getOcid());
+                character.updateInformation(characterDto);
+            } catch (BaseException ignored) {
+            }
         }
     }
 
