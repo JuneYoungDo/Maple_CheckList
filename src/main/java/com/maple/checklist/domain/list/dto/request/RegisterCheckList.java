@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterCheckList {
-    private List<ItemContent> dailyList;
-    private List<ItemContent> weeklyList;
-    private List<ItemContent> monthlyList;
+    private List<String> dailyList;
+    private List<String> weeklyList;
+    private List<String> monthlyList;
 }
 

@@ -8,7 +8,6 @@ import com.maple.checklist.domain.character.repository.CharacterRepository;
 import com.maple.checklist.domain.character.usecase.RegisterCharacterUseCase;
 import com.maple.checklist.domain.list.dto.request.CheckItem;
 import com.maple.checklist.domain.list.dto.request.CheckList;
-import com.maple.checklist.domain.list.dto.request.ItemContent;
 import com.maple.checklist.domain.list.dto.request.RegisterCheckList;
 import com.maple.checklist.domain.list.service.UpdateListService;
 import com.maple.checklist.domain.member.entity.Member;
@@ -68,24 +67,24 @@ public class RegisterCharacterService implements RegisterCharacterUseCase {
         // dailyList 변환 처리
         List<CheckItem> dailyList = new ArrayList<>();
         if (registerCheckList.getDailyList() != null) {
-            for (ItemContent item : registerCheckList.getDailyList()) {
-                dailyList.add(new CheckItem(item.getContent(), false));
+            for (String item : registerCheckList.getDailyList()) {
+                dailyList.add(new CheckItem(item, false));
             }
         }
 
         // weeklyList 변환 처리
         List<CheckItem> weeklyList = new ArrayList<>();
         if (registerCheckList.getWeeklyList() != null) {
-            for (ItemContent item : registerCheckList.getWeeklyList()) {
-                weeklyList.add(new CheckItem(item.getContent(), false));
+            for (String item : registerCheckList.getWeeklyList()) {
+                weeklyList.add(new CheckItem(item, false));
             }
         }
 
         // monthlyList 변환 처리
         List<CheckItem> monthlyList = new ArrayList<>();
         if (registerCheckList.getMonthlyList() != null) {
-            for (ItemContent item : registerCheckList.getMonthlyList()) {
-                monthlyList.add(new CheckItem(item.getContent(), false));
+            for (String item : registerCheckList.getMonthlyList()) {
+                monthlyList.add(new CheckItem(item, false));
             }
         }
 
