@@ -41,8 +41,15 @@ public class BatchService {
     }
 
     public Job createDailyLastJob() {
-        return new JobBuilder("DAILY_LAST_JOB",jobRepository)
+        return new JobBuilder("DAILY_LAST_JOB", jobRepository)
             .start(updateAndSendLogStep())
+            .listener(createJobExecution())
+            .build();
+    }
+
+    public Job createDeleteCharactersAndListJob() {
+        return new JobBuilder("DELETE_CHARACTERS_LIST_JOB", jobRepository)
+            .start(deleteCharacterAndListStep())
             .listener(createJobExecution())
             .build();
     }
@@ -80,6 +87,32 @@ public class BatchService {
             })
             .build();
     }
+
+    public Step deleteCharacterAndListStep() {
+        return new StepBuilder("Delete Character and List Step", jobRepository)
+            .tasklet(deleteCharacterAndListTasklet(), platformTransactionManager)
+            .listener(new StepExecutionListenerSupport() {
+                @Override
+                public void beforeStep(StepExecution stepExecution) {
+                }
+
+                @Override
+                public ExitStatus afterStep(StepExecution stepExecution) {
+                    printStepLog(stepExecution);
+                    return ExitStatus.COMPLETED;
+                }
+            })
+            .build();
+    }
+
+    public Tasklet deleteCharacterAndListTasklet() {
+        return (contribution, chunkContext) -> {
+            updateCharacterUseCase.removeDeletedCharacters();
+            updateListUseCase.removeDeletedLists();
+            return RepeatStatus.FINISHED;
+        };
+    }
+
 
     public Tasklet updateAndSendLogTasklet() {
         return (contribution, chunkContext) -> {

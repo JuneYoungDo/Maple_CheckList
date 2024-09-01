@@ -28,6 +28,9 @@ public class BatchScheduler {
     @Autowired
     private Job dailyLastJob;
 
+    @Autowired
+    private Job deleteCharacterAndListJob;
+
     @Scheduled(cron = "0 50 23 L * ?")  // 매달 마지막 날 밤 11시 50분에 실행
     public void scheduleMonthlyJob() throws Exception {
         jobLauncher.run(monthlyJob, new JobParametersBuilder()
@@ -39,6 +42,10 @@ public class BatchScheduler {
     @Scheduled(cron = "0 50 23 ? * 3")  // 매주 수요일 밤 11시 50분에 실행
     public void scheduleWeeklyJob() throws Exception {
         jobLauncher.run(weeklyJob, new JobParametersBuilder()
+            .addLong("time", System.currentTimeMillis())
+            .addLocalDateTime("LocalDateTime", LocalDateTime.now())
+            .toJobParameters());
+        jobLauncher.run(deleteCharacterAndListJob, new JobParametersBuilder()
             .addLong("time", System.currentTimeMillis())
             .addLocalDateTime("LocalDateTime", LocalDateTime.now())
             .toJobParameters());

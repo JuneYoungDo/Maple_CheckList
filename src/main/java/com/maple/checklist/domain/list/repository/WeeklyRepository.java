@@ -17,4 +17,7 @@ public interface WeeklyRepository extends JpaRepository<Weekly, Long> {
 
     @Query(value = "select w from Weekly w where w.deleted = false")
     Optional<List<Weekly>> findAllByDeleted();
+
+    @Query(value = "select w from Weekly w where w.deleted = true")
+    Optional<List<Weekly>> findAllByDeletedTrue();
 }

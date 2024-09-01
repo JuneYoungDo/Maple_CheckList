@@ -87,6 +87,18 @@ public class UpdateListService implements UpdateListUseCase {
     }
 
     @Override
+    public void removeDeletedLists() {
+        List<Daily> dailyList = dailyRepository.findAllByDeletedTrue().orElse(new ArrayList<>());
+        List<Weekly> weeklyList = weeklyRepository.findAllByDeletedTrue().orElse(new ArrayList<>());
+        List<Monthly> monthlyList = monthlyRepository.findAllByDeletedTrue()
+            .orElse(new ArrayList<>());
+
+        dailyRepository.deleteAll(dailyList);
+        weeklyRepository.deleteAll(weeklyList);
+        monthlyRepository.deleteAll(monthlyList);
+    }
+
+    @Override
     public void resetDaily() {
         List<Daily> dailyList = dailyRepository.findAllByDeleted().orElse(new ArrayList<>());
         log.info("==== Daily   Reset ====");

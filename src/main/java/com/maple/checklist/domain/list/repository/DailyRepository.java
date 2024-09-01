@@ -17,4 +17,7 @@ public interface DailyRepository extends JpaRepository<Daily, Long> {
 
     @Query(value = "select d from Daily d where d.deleted = false")
     Optional<List<Daily>> findAllByDeleted();
+
+    @Query(value = "select d from Daily d where d.deleted = true")
+    Optional<List<Daily>> findAllByDeletedTrue();
 }

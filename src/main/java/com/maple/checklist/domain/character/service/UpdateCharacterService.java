@@ -48,4 +48,11 @@ public class UpdateCharacterService implements UpdateCharacterUseCase {
         character.getAchievement().setDeleted();
         character.setDeleted();
     }
+
+    @Override
+    public void removeDeletedCharacters() {
+        List<Character> characterList = characterRepository.findAllByDeletedTrue()
+            .orElse(new ArrayList<>());
+        characterRepository.deleteAll(characterList);
+    }
 }

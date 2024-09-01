@@ -9,4 +9,6 @@ public interface UpdateCharacterUseCase {
     void updateAllCharacterInformation() throws IOException, ParseException, InterruptedException;
 
     void deleteCharacterInformation(Member member,Long characterId);
+
+    void removeDeletedCharacters();
 }

@@ -32,5 +32,10 @@ public class BatchConfiguration {
     public Job dailyLastJob() {
         return batchService.createDailyLastJob();
     }
+
+    @Bean
+    public Job deleteCharacterAndListJob() {
+        return batchService.createDeleteCharactersAndListJob();
+    }
 }
 

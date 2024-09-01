@@ -9,6 +9,7 @@ public interface UpdateListUseCase {
     void editCheckList(Member member, Long characterId, CheckList checkList);
     void checkOntItem(Member member, CheckOne checkOne);
     void deleteListByCharacterId(Character character);
+    void removeDeletedLists();
 
     void resetDaily();
     void resetWeekly();
