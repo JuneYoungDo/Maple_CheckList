@@ -15,6 +15,7 @@ import com.maple.checklist.global.utils.BcryptUtilsService;
 import com.maple.checklist.global.utils.MailUtilsService;
 import com.maple.checklist.global.utils.RedisService;
 import jakarta.transaction.Transactional;
+import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -55,8 +56,8 @@ public class RegisterMemberService implements RegisterMemberUseCase {
     @Override
     public void sendValidateEmail(String email) {
         checkAlreadyUsed(email);
-        String code = mailUtilsService.sendAuthMail(email);
-        redisService.saveEmailVerificationToken(email,code,10);
+        CompletableFuture<String> code = mailUtilsService.sendAuthMail(email);
+        redisService.saveEmailVerificationToken(email,code.join(),10);
     }
 
     @Override
