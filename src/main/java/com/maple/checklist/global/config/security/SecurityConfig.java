@@ -23,7 +23,8 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 public class SecurityConfig {
 
-    private final CorsFilter corsFilter;
+    private final CorsConfig corsConfig;
+//    private final CorsFilter corsFilter;
     private final JwtTokenProvider jwtTokenProvider;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
@@ -31,7 +32,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .addFilterBefore(corsFilter, SessionManagementFilter.class)
+            .addFilterBefore(corsConfig.corsFilter(), SessionManagementFilter.class)
             .addFilterBefore(
                 new JwtAuthenticationFilter(jwtTokenProvider),
                 UsernamePasswordAuthenticationFilter.class
