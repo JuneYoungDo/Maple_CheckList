@@ -55,17 +55,19 @@ public class UpdateMemberService implements UpdateMemberUseCase {
     @Override
     public void logout(String authorization) {
         long remainTime = jwtTokenProvider.getRemainingValidityInSeconds(authorization);
-        if(remainTime == -1) return;
-        else redisService.saveLogoutToken(authorization,remainTime);
+        if (remainTime == -1) {
+            return;
+        } else {
+            redisService.saveLogoutToken(authorization, remainTime);
+        }
     }
 
     @Override
-    public CompletableFuture<Void> resetPassword(Member member) {
-        return mailUtilsService.sendResetMail(member.getEmail())
-            .thenAccept(code -> {
-                String encryptedCode = bcryptUtilsService.encrypt(code);
-                member.changePassword(encryptedCode);
-                save(member);
-            });
+    public void resetPassword(Member member) {
+        CompletableFuture.runAsync(() -> {
+            String code = mailUtilsService.sendResetMail(member.getEmail());
+            member.changePassword(bcryptUtilsService.encrypt(code));
+            save(member);
+        });
     }
 }
