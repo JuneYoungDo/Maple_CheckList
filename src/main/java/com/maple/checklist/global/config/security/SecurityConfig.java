@@ -73,7 +73,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.addAllowedOrigin("*"); // 모든 Origin 허용
+        configuration.addAllowedOrigin("https://eul97.github.io");
+//        configuration.addAllowedOrigin("*"); // 모든 Origin 허용
         configuration.addAllowedHeader("*"); // 모든 Header 허용
         configuration.addAllowedMethod("*"); // 모든 HTTP 메소드 허용
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
