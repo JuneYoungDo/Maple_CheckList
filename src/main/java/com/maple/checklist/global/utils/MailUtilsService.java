@@ -7,7 +7,6 @@ import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
-import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -86,28 +85,25 @@ public class MailUtilsService {
         return code;
     }
 
-    public CompletableFuture<String> sendResetMail(String email) {
-        return CompletableFuture.supplyAsync(() -> {
-            String code = generatePassword();
-            String title = "[QuestBook] 비밀번호 변경 안내";
-            String emailContent = "안녕하세요, " + email + "님.\n\n" +
-                "QuestBook에서 사용자의 요청에 의해 임시 비밀번호로 비밀번호가 변경되었음을 알려드립니다.\n\n" +
-                "변경된 비밀번호는 아래 8자리 문자 및 숫자이며 외부의 유츨에 유의하시기 바랍니다.\n\n" +
-                "비밀번호 : " + code + " \n\n" +
-                "해당 비밀번호는 임시 비밀번호 임으로 확인 후 빠른 시일내에 변경을 권유드립니다.\n\n" +
-                "QuestBook을 이용해 주셔서 감사합니다.\n\n" +
-                "감사합니다,\n" +
-                "QuestBook 팀\n\n" +
-                "---\n\n" +
-                "지원:\n" +
-                "질문이 있거나 도움이 필요하시면, 이 이메일에 회신하시거나 QuestBookService@gmail.com으로 지원팀에 연락해 주세요.\n\n" +
-                "개인정보 보호:\n" +
-                "저희는 사용자의 개인정보를 소중히 여기며, 절대로 타사와 공유하지 않습니다.\n\n" +
-                "[QuestBook]\n";
-
-            sendMail(email, title, emailContent);
-            return code;
-        });
+    public String sendResetMail(String email) {
+        String code = generatePassword();
+        String title = "[QuestBook] 비밀번호 변경 안내";
+        String emailContent = "안녕하세요, " + email + "님.\n\n" +
+            "QuestBook에서 사용자의 요청에 의해 임시 비밀번호로 비밀번호가 변경되었음을 알려드립니다.\n\n" +
+            "변경된 비밀번호는 아래 8자리 문자 및 숫자이며 외부의 유츨에 유의하시기 바랍니다.\n\n" +
+            "비밀번호 : " + code + " \n\n" +
+            "해당 비밀번호는 임시 비밀번호 임으로 확인 후 빠른 시일내에 변경을 권유드립니다.\n\n" +
+            "QuestBook을 이용해 주셔서 감사합니다.\n\n" +
+            "감사합니다,\n" +
+            "QuestBook 팀\n\n" +
+            "---\n\n" +
+            "지원:\n" +
+            "질문이 있거나 도움이 필요하시면, 이 이메일에 회신하시거나 QuestBookService@gmail.com으로 지원팀에 연락해 주세요.\n\n" +
+            "개인정보 보호:\n" +
+            "저희는 사용자의 개인정보를 소중히 여기며, 절대로 타사와 공유하지 않습니다.\n\n" +
+            "[QuestBook]\n";
+        sendMail(email, title, emailContent);
+        return code;
     }
 
     public String generatePassword() {
