@@ -31,7 +31,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 추가
+//            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 추가
             .addFilterBefore(
                 new JwtAuthenticationFilter(jwtTokenProvider),
                 UsernamePasswordAuthenticationFilter.class
@@ -63,7 +63,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // CORS 설정을 위한 CorsConfigurationSource 빈 추가
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
