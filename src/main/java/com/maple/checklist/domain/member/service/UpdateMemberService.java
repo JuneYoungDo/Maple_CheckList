@@ -12,6 +12,7 @@ import com.maple.checklist.global.utils.BcryptUtilsService;
 import com.maple.checklist.global.utils.MailUtilsService;
 import com.maple.checklist.global.utils.RedisService;
 import jakarta.transaction.Transactional;
+import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -59,9 +60,12 @@ public class UpdateMemberService implements UpdateMemberUseCase {
     }
 
     @Override
-    public void resetPassword(Member member) {
-        String code = mailUtilsService.sendResetMail(member.getEmail());
-        member.changePassword(bcryptUtilsService.encrypt(code));
-        save(member);
+    public CompletableFuture<Void> resetPassword(Member member) {
+        return mailUtilsService.sendResetMail(member.getEmail())
+            .thenAccept(code -> {
+                String encryptedCode = bcryptUtilsService.encrypt(code);
+                member.changePassword(encryptedCode);
+                save(member);
+            });
     }
 }
