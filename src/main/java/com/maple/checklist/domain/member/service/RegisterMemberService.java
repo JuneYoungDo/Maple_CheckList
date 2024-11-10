@@ -47,7 +47,7 @@ public class RegisterMemberService implements RegisterMemberUseCase {
     public LoginResponseDto login(LoginDto loginDto) {
         Member member = memberRepository.findMemberByEmailAndDeleted(loginDto.getEmail())
             .orElseThrow(() -> new BaseException(AuthErrorCode.INCORRECT_EMAIL));
-        if(!bcryptUtilsService.isMatch(loginDto.getPassword(),member.getPassword())) {
+        if (!bcryptUtilsService.isMatch(loginDto.getPassword(), member.getPassword())) {
             throw new BaseException(AuthErrorCode.INCORRECT_PASSWORD);
         }
         return new LoginResponseDto(jwtTokenProvider.generateAccessToken(member.getMemberId()));
@@ -56,14 +56,16 @@ public class RegisterMemberService implements RegisterMemberUseCase {
     @Override
     public void sendValidateEmail(String email) {
         checkAlreadyUsed(email);
-        CompletableFuture<String> code = mailUtilsService.sendAuthMail(email);
-        redisService.saveEmailVerificationToken(email,code.join(),10);
+        CompletableFuture.runAsync(() -> {
+            String code = mailUtilsService.sendAuthMail(email);
+            redisService.saveEmailVerificationToken(email, code, 10);
+        });
     }
 
     @Override
     public void validateEmail(ValidateEmailDto validateEmailDto) {
         String code = redisService.getEmailVerificationToken(validateEmailDto.getEmail());
-        if(code != null && code.equals(validateEmailDto.getCode())) {
+        if (code != null && code.equals(validateEmailDto.getCode())) {
             redisService.deleteEmailVerificationToken(validateEmailDto.getEmail());
             redisService.saveEmailVerification(validateEmailDto.getEmail(), 10);
         } else {
@@ -74,7 +76,7 @@ public class RegisterMemberService implements RegisterMemberUseCase {
     @Override
     public void registerMember(MemberBaseDto memberBaseDto) {
         Boolean flag = redisService.getEmailVerification(memberBaseDto.getEmail());
-        if(flag != null && flag){
+        if (flag != null && flag) {
             register(memberBaseDto);
             redisService.deleteEmailVerification(memberBaseDto.getEmail());
         } else {
