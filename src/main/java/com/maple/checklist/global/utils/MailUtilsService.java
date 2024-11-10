@@ -63,29 +63,27 @@ public class MailUtilsService {
         log.info("SUCCESS for message sending");
     }
 
-    public CompletableFuture<String> sendAuthMail(String email) {
-        return CompletableFuture.supplyAsync(() -> {
-            String code = generateRandomNumber();
-            String title = "QuestBook 서비스에 함께해 주셔서 감사합니다.";
-            String emailContent = "안녕하세요, " + email + "님.\n\n" +
-                "QuestBook에 함께해 주셔서 감사합니다.\n\n" +
-                "회원가입을 완료하려면 이메일 주소를 인증해야 합니다. 아래 6자리 숫자 코드를 서비스 상에 입력해주세요.\n\n" +
-                "코드 : " + code + " \n\n" +
-                "이 코드는 10분 동안만 유효하므로 가능한 빨리 입력해 주시길 바랍니다.\n\n" +
-                "만약 이 이메일 주소로 계정을 생성하지 않으셨다면, 이 이메일을 무시하시거나 저희 서비스팀에 연락해 주세요.\n\n" +
-                "QuestBook에 가입해 주셔서 감사합니다.\n\n" +
-                "감사합니다,\n" +
-                "QuestBook 팀\n\n" +
-                "---\n\n" +
-                "지원:\n" +
-                "질문이 있거나 도움이 필요하시면, 이 이메일에 회신하시거나 QuestBookService@gmail.com으로 지원팀에 연락해 주세요.\n\n" +
-                "개인정보 보호:\n" +
-                "저희는 사용자의 개인정보를 소중히 여기며, 절대로 타사와 공유하지 않습니다.\n\n" +
-                "[QuestBook]\n";
+    public String sendAuthMail(String email) {
+        String code = generateRandomNumber();
+        String title = "QuestBook 서비스에 함께해 주셔서 감사합니다.";
+        String emailContent = "안녕하세요, " + email + "님.\n\n" +
+            "QuestBook에 함께해 주셔서 감사합니다.\n\n" +
+            "회원가입을 완료하려면 이메일 주소를 인증해야 합니다. 아래 6자리 숫자 코드를 서비스 상에 입력해주세요.\n\n" +
+            "코드 : " + code + " \n\n" +
+            "이 코드는 10분 동안만 유효하므로 가능한 빨리 입력해 주시길 바랍니다.\n\n" +
+            "만약 이 이메일 주소로 계정을 생성하지 않으셨다면, 이 이메일을 무시하시거나 저희 서비스팀에 연락해 주세요.\n\n" +
+            "QuestBook에 가입해 주셔서 감사합니다.\n\n" +
+            "감사합니다,\n" +
+            "QuestBook 팀\n\n" +
+            "---\n\n" +
+            "지원:\n" +
+            "질문이 있거나 도움이 필요하시면, 이 이메일에 회신하시거나 QuestBookService@gmail.com으로 지원팀에 연락해 주세요.\n\n" +
+            "개인정보 보호:\n" +
+            "저희는 사용자의 개인정보를 소중히 여기며, 절대로 타사와 공유하지 않습니다.\n\n" +
+            "[QuestBook]\n";
 
-            sendMail(email, title, emailContent);
-            return code;
-        });
+        sendMail(email, title, emailContent);
+        return code;
     }
 
     public CompletableFuture<String> sendResetMail(String email) {

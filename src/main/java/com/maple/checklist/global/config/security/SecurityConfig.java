@@ -63,7 +63,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // CORS 설정을 위한 CorsConfigurationSource 빈 추가
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
