@@ -67,7 +67,6 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.addAllowedOrigin("https://eul97.github.io");
         configuration.addAllowedOrigin("https://quest-book.store");
         configuration.addAllowedOrigin("192.168.0.7");
         configuration.addAllowedHeader("*"); // 모든 Header 허용
