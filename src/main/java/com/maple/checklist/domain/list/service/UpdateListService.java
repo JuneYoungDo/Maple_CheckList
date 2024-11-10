@@ -87,6 +87,18 @@ public class UpdateListService implements UpdateListUseCase {
     }
 
     @Override
+    public void removeDeletedLists() {
+        List<Daily> dailyList = dailyRepository.findAllByDeletedTrue().orElse(new ArrayList<>());
+        List<Weekly> weeklyList = weeklyRepository.findAllByDeletedTrue().orElse(new ArrayList<>());
+        List<Monthly> monthlyList = monthlyRepository.findAllByDeletedTrue()
+            .orElse(new ArrayList<>());
+
+        dailyRepository.deleteAll(dailyList);
+        weeklyRepository.deleteAll(weeklyList);
+        monthlyRepository.deleteAll(monthlyList);
+    }
+
+    @Override
     public void resetDaily() {
         List<Daily> dailyList = dailyRepository.findAllByDeleted().orElse(new ArrayList<>());
         log.info("==== Daily   Reset ====");
@@ -164,6 +176,24 @@ public class UpdateListService implements UpdateListUseCase {
             throw new BaseException(ListErrorCode.INVALID_LIST);
         }
         return monthly;
+    }
+
+    public void deleteListByCharacterId(Character character) {
+        List<Daily> dailyList = dailyRepository.findAllByCharacterAndDeleted(character)
+            .orElse(new ArrayList<>());
+        List<Weekly> weeklyList = weeklyRepository.findAllByCharacterAndDeleted(character)
+            .orElse(new ArrayList<>());
+        List<Monthly> monthlyList = monthlyRepository.findAllByCharacterAndDeleted(character)
+            .orElse(new ArrayList<>());
+        for (Daily daily : dailyList) {
+            daily.setDeleted();
+        }
+        for (Weekly weekly : weeklyList) {
+            weekly.setDeleted();
+        }
+        for (Monthly monthly : monthlyList) {
+            monthly.setDeleted();
+        }
     }
 
     public void editListAndUpdateAchievement(Character character, CheckList checkList) {

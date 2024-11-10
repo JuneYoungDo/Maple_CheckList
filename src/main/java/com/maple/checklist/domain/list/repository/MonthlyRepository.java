@@ -17,4 +17,7 @@ public interface MonthlyRepository extends JpaRepository<Monthly, Long> {
 
     @Query(value = "select m from Monthly m where m.deleted = false")
     Optional<List<Monthly>> findAllByDeleted();
+
+    @Query(value = "select m from Monthly m where m.deleted = true")
+    Optional<List<Monthly>> findAllByDeletedTrue();
 }
