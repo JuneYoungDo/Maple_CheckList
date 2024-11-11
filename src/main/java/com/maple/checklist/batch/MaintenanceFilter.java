@@ -19,7 +19,7 @@ public class MaintenanceFilter extends HttpFilter {
         throws IOException, ServletException {
         LocalDateTime now = LocalDateTime.now();
         LocalTime start = LocalTime.of(23, 50);
-        LocalTime end = LocalTime.of(0, 0);
+        LocalTime end = LocalTime.of(0, 50);
 
         boolean isMaintenanceTime =
             now.toLocalTime().isAfter(start) || now.toLocalTime().equals(start) || now.toLocalTime()
