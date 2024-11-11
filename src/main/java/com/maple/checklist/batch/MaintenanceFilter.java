@@ -19,7 +19,7 @@ public class MaintenanceFilter extends HttpFilter {
         throws IOException, ServletException {
         LocalDateTime now = LocalDateTime.now();
         LocalTime start = LocalTime.of(23, 50);
-        LocalTime end = LocalTime.of(0, 40);
+        LocalTime end = LocalTime.of(0, 0);
 
         boolean isMaintenanceTime =
             now.toLocalTime().isAfter(start) || now.toLocalTime().equals(start) || now.toLocalTime()
@@ -30,9 +30,11 @@ public class MaintenanceFilter extends HttpFilter {
         boolean isDailyNightly = isMaintenanceTime && !isWednesday && !isLastDayOfMonth;
 
         if (isDailyNightly || isWednesday || isLastDayOfMonth) {
-            response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            response.getWriter()
-                .write("Service is unavailable from 11:50 PM to 12:00 AM for maintenance.");
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            String jsonResponse = "{\"message\": \"Service is unavailable from 11:50 PM to 12:00 AM for maintenance.\"}";
+            response.getWriter().write(jsonResponse);
         } else {
             chain.doFilter(request, response);
         }
