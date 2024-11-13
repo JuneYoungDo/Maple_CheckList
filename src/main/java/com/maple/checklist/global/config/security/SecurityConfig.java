@@ -69,7 +69,9 @@ public class SecurityConfig {
         configuration.setAllowCredentials(true);
         configuration.addAllowedOrigin("https://quest-book.store");
         configuration.addAllowedOrigin("https://eul97.github.io");
-        configuration.addAllowedOrigin("192.168.0.7");
+        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin("https://192.168.0.7");
+        configuration.addAllowedOrigin("https://192.168.0.7:3000");
         configuration.addAllowedHeader("*"); // 모든 Header 허용
         configuration.addAllowedMethod("*"); // 모든 HTTP 메소드 허용
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
